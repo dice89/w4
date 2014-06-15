@@ -48,6 +48,7 @@ public class ExtractInfoForOutput {
 
 			String revision2 = html2text(revision);		
 			revision2 = revision2.replaceAll("[0-9]", "");
+			revision2 = revision2.replaceAll("[0-9]", "");
 			revision2 = revision2.replace(";", "");
 			revision2 = revision2.replace(",", "");
 			revision2 = revision2.replace("]", "");
@@ -62,8 +63,9 @@ public class ExtractInfoForOutput {
 			revision2 = revision2.replaceAll("\\?", "");
 			revision2 = revision2.replace("\"", "");
 			revision2 = revision2.replace(":", "");
-			revision2 = revision2.replace("|", " ");
-			revision2 = revision2.replace("}", " ");
+			revision2 = revision2.replace("|", "");
+			revision2 = revision2.replace("}", "");
+			revision2 = revision2.replace("}}", " ");
 			String[] splitting = revision2.split(" ");
 			for(String word: splitting) {
 			
@@ -98,8 +100,9 @@ public class ExtractInfoForOutput {
 			revision2 = revision2.replaceAll("\\?", "");
 			revision2 = revision2.replace("\"", "");
 			revision2 = revision2.replace(":", "");
-			revision2 = revision2.replace("|", " ");
-			revision2 = revision2.replace("}", " ");
+			revision2 = revision2.replace("|", "");
+			revision2 = revision2.replace("}", "");
+			revision2 = revision2.replace("}}", " ");
 			String[] splitting = revision2.split(" ");
 			HashMap<String,Integer> termfrequency = new HashMap<String, Integer>();
 			for(String word: splitting) {
