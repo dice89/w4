@@ -46,7 +46,7 @@ public class WikiExtractor {
         .setParameter("titles", keyword)
          .setParameter("prop", "revisions")
          .setParameter("rvprop", "content|user|timestamp|size|ids|userid|parsedcomment|tags")
-        .setParameter("rvlimit", "500")
+        .setParameter("rvlimit", "100000")
         .build();
 		
 		HttpGet httpget = new HttpGet(uri);
@@ -72,8 +72,8 @@ public class WikiExtractor {
 		return result;
 	}
 	
-	public ArrayList<Revision> parseJSON(String keyword) throws IllegalStateException, URISyntaxException, IOException{
-		ArrayList<Revision> revisionsList = new ArrayList<Revision>();
+	public RevisionList parseJSON(String keyword) throws IllegalStateException, URISyntaxException, IOException{
+		RevisionList revisionsList = new RevisionList();
 		String json = this.getJSONStringFromAPI(keyword);
 		JSONObject obj = new JSONObject(json);
 		
@@ -98,6 +98,8 @@ public class WikiExtractor {
 				counter++;
 				rev.setGeo(extractor.getGeoLocationForIP(rev.getUser_name()));
 				System.out.println(rev.getGeo().getCountryCode());
+			}else {
+				rev.setGeo(new GeoObject("", "", "not defined"));
 			}
 	
 			
@@ -111,7 +113,9 @@ public class WikiExtractor {
 	public static void main (String args[]) throws URISyntaxException, ClientProtocolException, IOException{
 		
 		WikiExtractor e = new WikiExtractor();
-		e.parseJSON("2014_Crimean_crisis");
+		RevisionList revisions = e.parseJSON("2014_Crimean_crisis");
+		
+		revisions.aggregateComments();
 	
 	}
 	
