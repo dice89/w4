@@ -78,7 +78,7 @@ public class WikiExtractor {
 			JSONObject jobj = (JSONObject) revisions.get(i);
 			System.out.println(jobj.getInt("revid"));
 			
-			Revision rev = new Revision(jobj.getString("user"), jobj.getInt("userid")+"", jobj.getString("timestamp"),jobj.getInt("size"), jobj.getString("*"), jobj.getString("comment"));
+			Revision rev = new Revision(jobj.getString("user"), jobj.getInt("userid")+"", jobj.getString("timestamp"),jobj.getInt("size"), jobj.getString("*"), jobj.getString("parsedcomment"));
 			revisionsList.add(rev);
 			
 			
