@@ -103,12 +103,8 @@ public class WikiExtractor {
 			
 		}
 
-		
-		
 		return revisionsList;
-		//System.out.println(page);
-		
-		
+
 		
 	}
 	
