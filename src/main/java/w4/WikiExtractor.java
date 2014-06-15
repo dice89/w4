@@ -46,7 +46,7 @@ public class WikiExtractor {
         .setParameter("titles", keyword)
          .setParameter("prop", "revisions")
          .setParameter("rvprop", "content|user|timestamp|size|ids|userid|parsedcomment|tags")
-        .setParameter("rvlimit", "10000")
+        .setParameter("rvlimit", "500")
         .build();
 		
 		HttpGet httpget = new HttpGet(uri);
@@ -77,9 +77,14 @@ public class WikiExtractor {
 		String json = this.getJSONStringFromAPI(keyword);
 		JSONObject obj = new JSONObject(json);
 		
-		JSONObject page = obj.getJSONObject("query").getJSONObject("pages").getJSONObject("163045");
-
+		JSONObject pages = obj.getJSONObject("query").getJSONObject("pages");
+		
+		String pagename = JSONObject.getNames(pages)[0];
+		int counter = 0;
+		JSONObject page = pages.getJSONObject(pagename);
+			
 		JSONArray revisions = page.getJSONArray("revisions");
+
 		
 		for(int i= 0; i <revisions.length(); i++) {
 			JSONObject jobj = (JSONObject) revisions.get(i);
@@ -90,13 +95,15 @@ public class WikiExtractor {
 			
 			boolean is_ip= rev.getUser_name().matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
 			if(is_ip){
-			
+				counter++;
 				rev.setGeo(extractor.getGeoLocationForIP(rev.getUser_name()));
 				System.out.println(rev.getGeo().getCountryCode());
 			}
 	
 			
 		}
+
+		
 		
 		return revisionsList;
 		//System.out.println(page);
@@ -108,7 +115,7 @@ public class WikiExtractor {
 	public static void main (String args[]) throws URISyntaxException, ClientProtocolException, IOException{
 		
 		WikiExtractor e = new WikiExtractor();
-		e.parseJSON("Crimea");
+		e.parseJSON("2014_Crimean_crisis");
 	
 	}
 	
