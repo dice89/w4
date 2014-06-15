@@ -4,7 +4,9 @@ import info.bliki.api.Page;
 import info.bliki.api.Revision;
 import info.bliki.api.User;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -23,7 +25,8 @@ import net.sourceforge.jwbf.mediawiki.bots.MediaWikiBot;
 
 public class WikiExtractor {
 	
-	public static void main (String args[]) throws URISyntaxException, ClientProtocolException, IOException{
+	
+	public String getJSONStringFromAPI(String keyword) throws URISyntaxException, IllegalStateException, IOException{
 		java.net.URI uri = new URIBuilder()
         .setScheme("http")
         .setHost("en.wikipedia.org")
@@ -47,9 +50,19 @@ public class WikiExtractor {
 		
 		CloseableHttpResponse resp = httpclient.execute(httpget);
 		
-		resp.getEntity().getContent();
+		BufferedReader br = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+		String theLine= "";
+		String result = "";
+		while( (theLine = br.readLine())!= null){
+			result = result + theLine;
+		}
 		
+		System.out.println(result);
 		
+		return result;
+	}
+	
+	public static void main (String args[]) throws URISyntaxException, ClientProtocolException, IOException{
 		
 	}
 	
