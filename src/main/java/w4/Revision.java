@@ -7,6 +7,8 @@ public class Revision {
 	private int size;
 	private String text;
 	private String comment;
+	
+	private GeoObject geo;
 	public Revision(String user_name, String user_id, String time_stamp,
 			int size, String text, String comment) {
 		super();
@@ -16,7 +18,23 @@ public class Revision {
 		this.size = size;
 		this.text = text;
 		this.comment = comment;
+		
 	}
+	
+	
+	public Revision(String user_name, String user_id, String time_stamp,
+			int size, String text, String comment, GeoObject geo) {
+		super();
+		this.user_name = user_name;
+		this.user_id = user_id;
+		this.time_stamp = time_stamp;
+		this.size = size;
+		this.text = text;
+		this.comment = comment;
+		this.geo = geo;
+	}
+
+
 	public String getUser_name() {
 		return user_name;
 	}
@@ -34,6 +52,16 @@ public class Revision {
 	}
 	public String getComment() {
 		return comment;
+	}
+
+
+	public GeoObject getGeo() {
+		return geo;
+	}
+
+
+	public void setGeo(GeoObject geo) {
+		this.geo = geo;
 	}
 	
 	 

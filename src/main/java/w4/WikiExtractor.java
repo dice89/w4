@@ -29,6 +29,13 @@ import net.sourceforge.jwbf.mediawiki.bots.MediaWikiBot;
 public class WikiExtractor {
 	
 	
+	private IPLocExtractor extractor;
+	
+	public WikiExtractor() {
+		super();
+		extractor = new IPLocExtractor();
+	}
+
 	public String getJSONStringFromAPI(String keyword) throws URISyntaxException, IllegalStateException, IOException{
 		java.net.URI uri = new URIBuilder()
         .setScheme("http")
@@ -39,7 +46,7 @@ public class WikiExtractor {
         .setParameter("titles", keyword)
          .setParameter("prop", "revisions")
          .setParameter("rvprop", "content|user|timestamp|size|ids|userid|parsedcomment|tags")
-        .setParameter("rvlimit", "10")
+        .setParameter("rvlimit", "10000")
         .build();
 		
 		HttpGet httpget = new HttpGet(uri);
@@ -76,11 +83,18 @@ public class WikiExtractor {
 		
 		for(int i= 0; i <revisions.length(); i++) {
 			JSONObject jobj = (JSONObject) revisions.get(i);
-			System.out.println(jobj.getInt("revid"));
+			//System.out.println(jobj.getInt("revid"));
 			
 			Revision rev = new Revision(jobj.getString("user"), jobj.getInt("userid")+"", jobj.getString("timestamp"),jobj.getInt("size"), jobj.getString("*"), jobj.getString("parsedcomment"));
 			revisionsList.add(rev);
 			
+			boolean is_ip= rev.getUser_name().matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
+			if(is_ip){
+			
+				rev.setGeo(extractor.getGeoLocationForIP(rev.getUser_name()));
+				System.out.println(rev.getGeo().getCountryCode());
+			}
+	
 			
 		}
 		
